@@ -39,13 +39,13 @@ export class AuthService {
     await this.userRepository.save(user);
   }
 
-  public async getAuthenticatedUser(email: string, hashedPassword: string) {
+  public async getAuthenticatedUser(email: string, checkedPassword: string) {
     const user = await this.userRepository.findOneBy({ email: email });
     if (!user) {
       throw new InvalidCredentialsException();
     }
 
-    const passwordMatched = await verify(user.password, hashedPassword);
+    const passwordMatched = await verify(user.password, checkedPassword);
     if (!passwordMatched) {
       throw new InvalidCredentialsException();
     }
